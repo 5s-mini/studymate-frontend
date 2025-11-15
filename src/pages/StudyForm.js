@@ -1,63 +1,53 @@
-import React, { useState, useEffect } from "react";
-import api from "../api/api";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import api from '../api/api';
+import { useNavigate, useParams } from '../router/SimpleRouter';
 
 function StudyForm() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [form, setForm] = useState({ title: "", description: "" });
-    const isEdit = !!id;
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
 
     useEffect(() => {
-        if (isEdit) {
-            api.get(`/studies/${id}`).then((res) => setForm(res.data));
+        if (!id) {
+            return;
         }
-    }, [id, isEdit]);
 
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            if (isEdit) {
-                await api.put(`/studies/${id}`, form);
-                alert("스터디 수정 완료");
-            } else {
-                await api.post("/studies", form);
-                alert("스터디 생성 완료");
+        const fetchStudy = async () => {
+            try {
+                const res = await api.get(`/studies/${id}`);
+                setTitle(res.data.title);
+                setDescription(res.data.description);
+            } catch (err) {
+                alert('스터디 정보를 불러오지 못했습니다.');
             }
-            navigate("/");
+        };
+
+        fetchStudy();
+    }, [id]);
+
+    const handleSubmit = async event => {
+        event.preventDefault();
+
+        try {
+            const payload = { title, description };
+            if (id) {
+                await api.put(`/studies/${id}`, payload);
+            } else {
+                await api.post('/studies', payload);
+            }
+            navigate('/studies');
         } catch (err) {
-            alert("저장 실패");
+            alert('저장 중 오류가 발생했습니다.');
         }
     };
 
     return (
-        <div>
-            <h2>{isEdit ? "스터디 수정" : "새 스터디 생성"}</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="title"
-                    placeholder="스터디 제목"
-                    value={form.title}
-                    onChange={handleChange}
-                    required
-                />
-                <br />
-                <textarea
-                    name="description"
-                    placeholder="스터디 설명"
-                    value={form.description}
-                    onChange={handleChange}
-                    required
-                />
-                <br />
-                <button type="submit">{isEdit ? "수정" : "등록"}</button>
-            </form>
-        </div>
+        <form onSubmit={handleSubmit}>
+            <input value={title} onChange={event => setTitle(event.target.value)} />
+            <textarea value={description} onChange={event => setDescription(event.target.value)} />
+            <button type="submit">저장</button>
+        </form>
     );
 }
 

@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import api from "../api/api";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import api from '../api/api';
+import { useNavigate } from '../router/SimpleRouter';
 
 function Signup() {
     const navigate = useNavigate();
-    const [form, setForm] = useState({ email: "", password: "", nickname: "" });
+    const [form, setForm] = useState({ email: '', password: '', nickname: '' });
 
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+    const handleChange = event => {
+        setForm({ ...form, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async event => {
+        event.preventDefault();
         try {
-            await api.post("/users/signup", form);
-            alert("회원가입이 완료되었습니다.");
-            navigate("/login");
+            await api.post('/users/signup', form);
+            alert('회원가입이 완료되었습니다.');
+            navigate('/login');
         } catch (err) {
-            alert("회원가입 실패: " + err.response?.data?.message || "서버 오류");
+            alert('회원가입 실패: ' + (err.response?.data?.message || '서버 오류'));
         }
     };
 
