@@ -24,16 +24,26 @@ function StudyDetail() {
     }, [id, navigate]);
 
     if (!study) {
-        return <div>로딩 중...</div>;
+        return <div className="empty-state">로딩 중...</div>;
     }
 
     return (
-        <div>
+        <article className="form-card">
             <h2>{study.title}</h2>
-            <p>{study.description}</p>
-            <button onClick={() => navigate('/studies')}>목록으로</button>
-            <Link to={`/studies/${id}/edit`}>수정하기</Link>
-        </div>
+            <p className="helper">{study.description}</p>
+            <div className="study-meta">
+                <span>스터디 번호 #{study.id}</span>
+                {study.owner && <span>리더: {study.owner}</span>}
+            </div>
+            <div className="inline-actions" style={{ marginTop: 14 }}>
+                <button className="button secondary" onClick={() => navigate('/studies')}>
+                    목록으로
+                </button>
+                <Link className="button" to={`/studies/${id}/edit`}>
+                    수정하기
+                </Link>
+            </div>
+        </article>
     );
 }
 

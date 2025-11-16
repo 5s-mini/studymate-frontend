@@ -11,18 +11,25 @@ function Navbar() {
     };
 
     return (
-        <nav>
-            <Link to="/">홈</Link> |{' '}
-            {token ? (
-                <>
-                    <button onClick={handleLogout}>로그아웃</button>
-                </>
-            ) : (
-                <>
-                    <Link to="/login">로그인</Link> | <Link to="/signup">회원가입</Link>
-                </>
-            )}
-        </nav>
+        <header className="navbar">
+            <Link to="/" className="nav-brand">
+                <span className="nav-brand-mark">S</span>
+                <span>StudyMate</span>
+            </Link>
+            <div className="nav-links">
+                <Link className="nav-link" to="/studies">스터디</Link>
+                {token ? (
+                    <button className="button secondary" onClick={handleLogout}>
+                        로그아웃
+                    </button>
+                ) : (
+                    <>
+                        <Link className="nav-link" to="/login">로그인</Link>
+                        <Link className="button" to="/signup">시작하기</Link>
+                    </>
+                )}
+            </div>
+        </header>
     );
 }
 

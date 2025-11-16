@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import api from '../api/api';
-import { useNavigate } from '../router/SimpleRouter';
+import { Link, useNavigate } from '../router/SimpleRouter';
 
 function Signup() {
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ function Signup() {
         event.preventDefault();
         try {
             await api.post('/users/signup', form);
-            alert('회원가입이 완료되었습니다.');
+            alert('회원가입이 완료되었습니다. 로그인해 주세요.');
             navigate('/login');
         } catch (err) {
             alert('회원가입 실패: ' + (err.response?.data?.message || '서버 오류'));
@@ -22,39 +22,52 @@ function Signup() {
     };
 
     return (
-        <div>
-            <h2>회원가입</h2>
+        <section className="form-card">
+            <h2>지금 바로 스터디를 시작하세요!</h2>
+            <p className="helper">이메일과 닉네임, 비밀번호만 입력하면 가입이 완료됩니다.</p>
             <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="이메일"
-                    value={form.email}
-                    onChange={handleChange}
-                    required
-                />
-                <br />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="비밀번호"
-                    value={form.password}
-                    onChange={handleChange}
-                    required
-                />
-                <br />
-                <input
-                    type="text"
-                    name="nickname"
-                    placeholder="닉네임"
-                    value={form.nickname}
-                    onChange={handleChange}
-                    required
-                />
-                <br />
-                <button type="submit">회원가입</button>
+                <div className="form-field">
+                    <label htmlFor="email">이메일</label>
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        value={form.email}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-field">
+                    <label htmlFor="nickname">닉네임</label>
+                    <input
+                        id="nickname"
+                        type="text"
+                        name="nickname"
+                        placeholder="스터디메이트"
+                        value={form.nickname}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-field">
+                    <label htmlFor="password">비밀번호</label>
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="8글자 이상 입력하세요"
+                        value={form.password}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="inline-actions">
+                    <button className="button" type="submit">회원가입</button>
+                    <Link className="nav-link" to="/login">이미 계정이 있나요?</Link>
+                </div>
             </form>
-        </div>
+        </section>
     );
 }
 
