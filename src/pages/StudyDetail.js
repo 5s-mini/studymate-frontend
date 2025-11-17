@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import api from '../api/api';
 import { useParams, useNavigate, Link } from '../router/SimpleRouter';
 
@@ -6,22 +6,59 @@ function StudyDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [study, setStudy] = useState(null);
+    const [me, setMe] = useState(null);
+    const [joining, setJoining] = useState(false);
+
+    const loadStudy = async () => {
+        try {
+            const res = await api.get(`/studies/${id}`);
+            setStudy(res.data);
+        } catch (err) {
+            alert('스터디 정보를 불러오지 못했습니다.');
+            navigate('/studies');
+        }
+    };
+
+    const loadProfile = async () => {
+        try {
+            const res = await api.get('/users/me');
+            setMe(res.data);
+        } catch (error) {
+            setMe(null);
+        }
+    };
 
     useEffect(() => {
-        const fetchStudy = async () => {
-            try {
-                const res = await api.get(`/studies/${id}`);
-                setStudy(res.data);
-            } catch (err) {
-                alert('스터디 정보를 불러오지 못했습니다.');
-                navigate('/studies');
-            }
-        };
-
-        if (id) {
-            fetchStudy();
+        if (!id) {
+            return;
         }
-    }, [id, navigate]);
+        loadStudy();
+        loadProfile();
+    }, [id]);
+
+    const alreadyJoined = useMemo(() => {
+        if (!me || !study) {
+            return false;
+        }
+        return (me.joinedStudies || []).some(item => item.id === study.id);
+    }, [me, study]);
+
+    const handleJoin = async () => {
+        if (!id) {
+            return;
+        }
+        setJoining(true);
+        try {
+            const res = await api.post(`/studies/${id}/join`);
+            setStudy(res.data);
+            await loadProfile();
+            alert('스터디에 참여했습니다!');
+        } catch (error) {
+            alert(error.response?.data?.message || '참여에 실패했습니다.');
+        } finally {
+            setJoining(false);
+        }
+    };
 
     if (!study) {
         return <div className="empty-state">로딩 중...</div>;
@@ -33,7 +70,15 @@ function StudyDetail() {
             <p className="helper">{study.description}</p>
             <div className="study-meta">
                 <span>스터디 번호 #{study.id}</span>
-                {study.owner && <span>리더: {study.owner}</span>}
+                <span>리더: {study.owner}</span>
+                <span>멤버 {study.members?.length || 0}명</span>
+            </div>
+            <div className="chip-group" style={{ marginBottom: 12 }}>
+                {(study.members || []).map(name => (
+                    <span className="chip" key={name}>
+                        {name}
+                    </span>
+                ))}
             </div>
             <div className="inline-actions" style={{ marginTop: 14 }}>
                 <button className="button secondary" onClick={() => navigate('/studies')}>
@@ -42,6 +87,14 @@ function StudyDetail() {
                 <Link className="button" to={`/studies/${id}/edit`}>
                     수정하기
                 </Link>
+                <button
+                    className="button"
+                    type="button"
+                    disabled={joining || alreadyJoined}
+                    onClick={handleJoin}
+                >
+                    {alreadyJoined ? '이미 참여 중' : joining ? '참여 중...' : '참여하기'}
+                </button>
             </div>
         </article>
     );

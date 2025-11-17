@@ -7,6 +7,8 @@ import StudyList from './pages/StudyList';
 import StudyDetail from './pages/StudyDetail';
 import StudyForm from './pages/StudyForm';
 import Navbar from './components/Navbar';
+import MyPage from './pages/MyPage';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
     return (
@@ -18,10 +20,12 @@ function App() {
                         <Route path="/" element={<StudyList />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
+                        <Route path="/reset-password" element={<ResetPassword />} />
                         <Route path="/studies" element={<StudyList />} />
                         <Route path="/studies/:id" element={<StudyDetail />} />
                         <Route path="/studies/new" element={<StudyForm />} />
                         <Route path="/studies/:id/edit" element={<StudyForm />} />
+                        <Route path="/mypage" element={<MyPage />} />
                         <Route path="*" element={<StudyList />} />
                     </Routes>
                 </main>
