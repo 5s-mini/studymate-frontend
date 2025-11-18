@@ -9,6 +9,8 @@ import StudyForm from './pages/StudyForm';
 import Navbar from './components/Navbar';
 import MyPage from './pages/MyPage';
 import ResetPassword from './pages/ResetPassword';
+import About from './pages/About';
+import Support from './pages/Support';
 
 function App() {
     return (
@@ -21,6 +23,8 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/reset-password" element={<ResetPassword />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/support" element={<Support />} />
                         <Route path="/studies" element={<StudyList />} />
                         <Route path="/studies/:id" element={<StudyDetail />} />
                         <Route path="/studies/new" element={<StudyForm />} />

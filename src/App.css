@@ -1,15 +1,15 @@
 :root {
-    --bg: #0e1a12;
-    --surface: #142a1d;
-    --surface-elevated: #1d3b29;
-    --primary: #6df0ad;
-    --primary-strong: #3bd488;
-    --text: #f6fff9;
-    --muted: #c1e2cf;
-    --border: #235032;
-    --accent: #b0f7d2;
+    --bg: #0a1420;
+    --surface: #0f1d2f;
+    --surface-elevated: #13263b;
+    --primary: #6ac8ff;
+    --primary-strong: #3ca9ff;
+    --text: #eff7ff;
+    --muted: #bed2e9;
+    --border: #1e3a57;
+    --accent: #9ed4ff;
     --danger: #ff8f8f;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.26);
     --radius-lg: 16px;
     --radius-md: 12px;
     --radius-sm: 10px;
@@ -17,10 +17,10 @@
 
 .app-shell {
     min-height: 100vh;
-    background: radial-gradient(circle at 18% 18%, rgba(109, 240, 173, 0.16), transparent 25%),
-    radial-gradient(circle at 82% 12%, rgba(176, 247, 210, 0.12), transparent 22%),
-    radial-gradient(circle at 50% 74%, rgba(109, 240, 173, 0.12), transparent 25%),
-    linear-gradient(135deg, #0b150f 0%, #0c1912 45%, #0e1a12 100%);
+    background: radial-gradient(circle at 18% 18%, rgba(106, 200, 255, 0.16), transparent 25%),
+    radial-gradient(circle at 82% 12%, rgba(158, 212, 255, 0.12), transparent 22%),
+    radial-gradient(circle at 50% 74%, rgba(94, 178, 255, 0.12), transparent 25%),
+    linear-gradient(135deg, #08101a 0%, #0a1723 45%, #0a1420 100%);
     color: var(--text);
 }
 
@@ -35,8 +35,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 18px 24px;
-    border-bottom: 1px solid rgba(35, 80, 50, 0.6);
-    background: rgba(20, 42, 29, 0.9);
+    border-bottom: 1px solid rgba(30, 58, 87, 0.6);
+    background: rgba(15, 29, 47, 0.9);
     backdrop-filter: blur(10px);
     position: sticky;
     top: 0;
@@ -61,7 +61,7 @@
     place-items: center;
     border-radius: 12px;
     background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-    color: #0d2418;
+    color: #06101d;
     font-weight: 800;
     box-shadow: var(--shadow);
 }
@@ -83,7 +83,7 @@
 
 .nav-link:hover {
     color: var(--text);
-    background: rgba(109, 240, 173, 0.12);
+    background: rgba(106, 200, 255, 0.14);
 }
 
 .button {
@@ -94,7 +94,7 @@
     padding: 10px 16px;
     border: 1px solid var(--primary);
     background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-    color: #0f1c14;
+    color: #04101d;
     border-radius: var(--radius-sm);
     font-weight: 700;
     cursor: pointer;
@@ -104,7 +104,7 @@
 
 .button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.26);
 }
 
 .button:disabled {
@@ -124,7 +124,7 @@
     margin: 28px 0 20px;
     padding: 26px;
     border-radius: var(--radius-lg);
-    background: linear-gradient(135deg, rgba(109, 240, 173, 0.2), rgba(20, 42, 29, 0.92));
+    background: linear-gradient(135deg, rgba(106, 200, 255, 0.2), rgba(15, 29, 47, 0.92));
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
 }
@@ -157,7 +157,7 @@
 
 .card h3 {
     margin: 0 0 8px;
-    color: #eafff1;
+    color: #eaf4ff;
 }
 
 .card p {
@@ -167,9 +167,9 @@
 
 .form-card {
     width: 100%;
-    max-width: 100%;
-    margin: 32px auto;
-    padding: 32px 28px;
+    max-width: 760px;
+    margin: 36px auto;
+    padding: 36px 30px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
@@ -263,12 +263,12 @@
 
 .auth-layout {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
     align-items: stretch;
     max-width: 1240px;
     margin: 0 auto;
-    padding: 0 4px;
+    padding: 0 12px;
 }
 
 .auth-layout > * {
@@ -276,7 +276,7 @@
 }
 
 .auth-aside {
-    background: linear-gradient(145deg, rgba(109, 240, 173, 0.2), rgba(20, 42, 29, 0.85));
+    background: linear-gradient(145deg, rgba(106, 200, 255, 0.2), rgba(15, 29, 47, 0.85));
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow);
@@ -430,9 +430,9 @@
 .chip {
     padding: 6px 10px;
     border-radius: 20px;
-    background: rgba(107, 231, 165, 0.16);
+    background: rgba(106, 200, 255, 0.16);
     border: 1px solid var(--border);
-    color: #c9ffe2;
+    color: #d7ecff;
     font-weight: 600;
     font-size: 13px;
 }

@@ -30,7 +30,6 @@ function Login() {
                 <ul className="checklist">
                     <li>진행 중인 스터디 현황을 한눈에 확인</li>
                     <li>관심사 기반 추천 스터디 준비 중</li>
-                    <li>데모 계정: demo@studymate.dev / password123</li>
                 </ul>
             </div>
             <div className="form-card">
