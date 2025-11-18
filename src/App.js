@@ -26,9 +26,9 @@ function App() {
                         <Route path="/about" element={<About />} />
                         <Route path="/support" element={<Support />} />
                         <Route path="/studies" element={<StudyList />} />
-                        <Route path="/studies/:id" element={<StudyDetail />} />
                         <Route path="/studies/new" element={<StudyForm />} />
                         <Route path="/studies/:id/edit" element={<StudyForm />} />
+                        <Route path="/studies/:id" element={<StudyDetail />} />
                         <Route path="/mypage" element={<MyPage />} />
                         <Route path="*" element={<StudyList />} />
                     </Routes>
