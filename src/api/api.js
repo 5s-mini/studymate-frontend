@@ -226,28 +226,30 @@ const api = {
 
         if (path === '/studies') {
             const currentUser = getCurrentUser(state);
-            const owner = currentUser?.nickname || '익명';
+            if (!currentUser) {
+                return failure('로그인이 필요합니다.', 401);
+            }
+
+            const owner = currentUser.nickname;
 
             const newStudy = withStudyDefaults({
                 id: nextId(state.studies),
                 title: body.title || '제목 없음',
                 description: body.description || '',
                 owner,
-                members: currentUser?.nickname ? [currentUser.nickname] : []
+                members: [currentUser.nickname]
             });
 
             state.studies.push(newStudy);
 
-            if (currentUser) {
-                const index = state.users.findIndex(user => user.id === currentUser.id);
-                if (index !== -1) {
-                    const joined = new Set(state.users[index].joinedStudyIds);
-                    joined.add(newStudy.id);
-                    state.users[index] = {
-                        ...state.users[index],
-                        joinedStudyIds: Array.from(joined)
-                    };
-                }
+            const index = state.users.findIndex(user => user.id === currentUser.id);
+            if (index !== -1) {
+                const joined = new Set(state.users[index].joinedStudyIds);
+                joined.add(newStudy.id);
+                state.users[index] = {
+                    ...state.users[index],
+                    joinedStudyIds: Array.from(joined)
+                };
             }
 
             saveState(state);
@@ -340,6 +342,40 @@ const api = {
 
             const { password, ...safeUser } = updated;
             return success(safeUser);
+        }
+
+        return failure('지원하지 않는 경로입니다.', 404);
+    },
+
+    async delete(path) {
+        const state = loadState();
+
+        if (path.startsWith('/studies/')) {
+            const currentUser = getCurrentUser(state);
+            if (!currentUser) {
+                return failure('로그인이 필요합니다.', 401);
+            }
+
+            const id = Number(path.replace('/studies/', ''));
+            const index = state.studies.findIndex(item => item.id === id);
+            if (index === -1) {
+                return failure('스터디를 찾을 수 없습니다.', 404);
+            }
+
+            const study = state.studies[index];
+            if (study.owner !== currentUser.nickname) {
+                return failure('삭제 권한이 없습니다.', 403);
+            }
+
+            state.studies.splice(index, 1);
+
+            state.users = state.users.map(user => ({
+                ...user,
+                joinedStudyIds: (user.joinedStudyIds || []).filter(joinedId => joinedId !== id)
+            }));
+
+            saveState(state);
+            return success({ message: '스터디가 삭제되었습니다.' });
         }
 
         return failure('지원하지 않는 경로입니다.', 404);

@@ -43,6 +43,13 @@ function StudyDetail() {
         return (me.joinedStudies || []).some(item => item.id === study.id);
     }, [me, study]);
 
+    const isOwner = useMemo(() => {
+        if (!me || !study) {
+            return false;
+        }
+        return me.nickname === study.owner;
+    }, [me, study]);
+
     const handleJoin = async () => {
         if (!id) {
             return;
@@ -54,9 +61,40 @@ function StudyDetail() {
             await loadProfile();
             alert('스터디에 참여했습니다!');
         } catch (error) {
+            if (error.response?.status === 401) {
+                alert('로그인이 필요합니다. 다시 로그인해 주세요.');
+                navigate('/login');
+                return;
+            }
+
             alert(error.response?.data?.message || '참여에 실패했습니다.');
         } finally {
             setJoining(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!id) {
+            return;
+        }
+
+        const confirmDelete = window.confirm('정말로 이 스터디를 삭제하시겠어요?');
+        if (!confirmDelete) {
+            return;
+        }
+
+        try {
+            await api.delete(`/studies/${id}`);
+            alert('스터디가 삭제되었습니다.');
+            navigate('/studies');
+        } catch (error) {
+            if (error.response?.status === 401) {
+                alert('로그인이 필요합니다. 다시 로그인해 주세요.');
+                navigate('/login');
+                return;
+            }
+
+            alert(error.response?.data?.message || '삭제에 실패했습니다.');
         }
     };
 
@@ -87,6 +125,11 @@ function StudyDetail() {
                 <Link className="button" to={`/studies/${id}/edit`}>
                     수정하기
                 </Link>
+                {isOwner && (
+                    <button className="button secondary" type="button" onClick={handleDelete}>
+                        스터디 삭제
+                    </button>
+                )}
                 <button
                     className="button"
                     type="button"

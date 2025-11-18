@@ -38,6 +38,12 @@ function StudyForm() {
             }
             navigate('/studies');
         } catch (err) {
+            if (err.response?.status === 401) {
+                alert('로그인이 필요합니다. 다시 로그인해 주세요.');
+                navigate('/login');
+                return;
+            }
+
             alert('저장 중 오류가 발생했습니다.');
         }
     };
@@ -53,7 +59,7 @@ function StudyForm() {
                         id="title"
                         value={title}
                         onChange={event => setTitle(event.target.value)}
-                        placeholder="예: 우테코 프리코스 스터디"
+                        placeholder="예: 프론트엔드 면접 스터디"
                         required
                     />
                 </div>
@@ -63,7 +69,7 @@ function StudyForm() {
                         id="description"
                         value={description}
                         onChange={event => setDescription(event.target.value)}
-                        placeholder="어떤 목표로 진행하는지, 스터디 주기와 방식 등 세부 계획을 적어주세요."
+                        placeholder="어떤 목표로 진행하는지, 주기와 방식 등을 적어주세요."
                         required
                     />
                 </div>
