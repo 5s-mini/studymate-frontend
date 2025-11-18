@@ -50,6 +50,13 @@ function StudyDetail() {
         return me.nickname === study.owner;
     }, [me, study]);
 
+    const canManage = useMemo(() => {
+        if (!me) {
+            return false;
+        }
+        return isOwner || me.isAdmin;
+    }, [isOwner, me]);
+
     const handleJoin = async () => {
         if (!id) {
             return;
@@ -125,7 +132,7 @@ function StudyDetail() {
                 <Link className="button" to={`/studies/${id}/edit`}>
                     수정하기
                 </Link>
-                {isOwner && (
+                {canManage && (
                     <button className="button secondary" type="button" onClick={handleDelete}>
                         스터디 삭제
                     </button>

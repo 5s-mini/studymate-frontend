@@ -11,18 +11,21 @@ const delay = (value, shouldReject = false) =>
         }, 120);
     });
 
+const ADMIN_EMAIL = 'dnclsehd123@naver.com';
+
 const initialState = {
     users: [
         {
             id: 1,
-            email: 'dnclsehd123@naver.com',
+            email: 'plain6024@naver.com',
             password: 'qwer1234',
             nickname: '오상민',
             bio: '웹 개발 프로젝트를 이끄는 리더입니다.',
             jobTitle: '풀스택 개발자',
             goals: '멋진 웹 서비스를 완성하기',
             interests: ['웹 개발', '협업', 'UI/UX'],
-            joinedStudyIds: [1]
+            joinedStudyIds: [1],
+            isAdmin: true
         }
     ],
     studies: [
@@ -43,7 +46,8 @@ const withUserDefaults = user => ({
     joinedStudyIds: Array.isArray(user.joinedStudyIds) ? user.joinedStudyIds : [],
     bio: user.bio || '',
     jobTitle: user.jobTitle || '',
-    goals: user.goals || ''
+    goals: user.goals || '',
+    isAdmin: Boolean(user.isAdmin) || user.email === ADMIN_EMAIL
 });
 
 const withStudyDefaults = study => ({
@@ -363,7 +367,7 @@ const api = {
             }
 
             const study = state.studies[index];
-            if (study.owner !== currentUser.nickname) {
+            if (study.owner !== currentUser.nickname && !currentUser.isAdmin) {
                 return failure('삭제 권한이 없습니다.', 403);
             }
 
